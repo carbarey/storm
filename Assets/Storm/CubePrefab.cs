@@ -92,4 +92,18 @@ public class CubePrefab : MonoBehaviour {
         return s > 0f && t > 0f && (s + t) < 2f * A * sign;
     }
 
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.gameObject.tag == "obstacle")
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
+        
+    }
+
+
 }

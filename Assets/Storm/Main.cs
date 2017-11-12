@@ -6,14 +6,18 @@ using UnityEngine;
 public class Main : MonoBehaviour {
 
     public GameObject cubePrefab;
+    public GameObject obstaclePrefab;
 
     public int numberOfCubes;
+    public int numberOfObstacles;
     public float strength;
     public float minStrength2;
     public float interiorStrength;
     public float distTriangleScale;
+    public float obstacleSpeed;
 
     private GameObject[] myCubes;
+    private GameObject[] myObstacles;    
 
     private Transform mySphereLeft;
     private Transform mySphereRight;
@@ -38,13 +42,22 @@ public class Main : MonoBehaviour {
         GameObject CubesContainer = new GameObject("CubesContainer");
 
         myCubes = new GameObject[numberOfCubes];
+        myObstacles = new GameObject[numberOfObstacles];
+
 
         for (int i = 0; i < numberOfCubes; i++)
         {
             myCubes[i] = (GameObject)Instantiate(cubePrefab, CubesContainer.transform);
-            myCubes[i].transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
+            myCubes[i].transform.position = new Vector3(Random.Range(0f, 1f), -1.0f, Random.Range(-1f, 0f));
         }
-              
+                
+        for (int i = 0; i < numberOfObstacles; i++)
+        {
+            myObstacles[i] = (GameObject)Instantiate(obstaclePrefab);
+            myObstacles[i].transform.position = new Vector3(Random.Range(-4.0f, 0f), -1.0f, Random.Range(-1f, 0f));
+        }
+
+
     }
 
 
@@ -62,9 +75,10 @@ public class Main : MonoBehaviour {
 
             print(leftHandPosition);
 
-            mySphereLeft.position = leftHandPosition;
-            mySphereRight.position = rightHandPosition;
-            mySphereHead.position = riftHeadset.position - new Vector3(0, 0.5f, 0);
+            mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -1.0f, leftHandPosition.z);
+            mySphereRight.transform.position = new Vector3(rightHandPosition.x, -1.0f, rightHandPosition.z);
+            mySphereHead.transform.position = new Vector3(headPosition.x, -1.0f, headPosition.z);
+
         }
 
     }
