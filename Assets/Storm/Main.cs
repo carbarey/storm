@@ -25,7 +25,7 @@ public class Main : MonoBehaviour {
     private Transform riftHeadset;
 
     private bool existAvatar;
-
+    private float sphereLeftVelocity;
 
     void Start()
     {
@@ -36,7 +36,12 @@ public class Main : MonoBehaviour {
         mySphereLeft = GameObject.Find("SphereLeft").transform;
         mySphereRight = GameObject.Find("SphereRight").transform;
         mySphereHead = GameObject.Find("SphereHead").transform;
-        if (existAvatar) riftHeadset = GameObject.Find("CenterEyeAnchor").transform;
+
+        if (existAvatar)
+        {
+            riftHeadset = GameObject.Find("CenterEyeAnchor").transform;
+            UpdateSpherePositions();
+        }
 
 
         GameObject CubesContainer = new GameObject("CubesContainer");
@@ -64,23 +69,28 @@ public class Main : MonoBehaviour {
 
     void Update() 
     {
-        
+        if (existAvatar) UpdateSpherePositions();
+    }
 
-        if (existAvatar)
-        {
 
-            Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
-            Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
-            Vector3 headPosition = riftHeadset.position;
+    void UpdateSpherePositions()
+    {
+        Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+        Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+        Vector3 headPosition = riftHeadset.position;
 
-            print(leftHandPosition);
+        Vector3 leftHandVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch);
+        Vector3 rightHandVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
 
-            mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -1.0f, leftHandPosition.z);
-            mySphereRight.transform.position = new Vector3(rightHandPosition.x, -1.0f, rightHandPosition.z);
-            mySphereHead.transform.position = new Vector3(headPosition.x, -1.0f, headPosition.z);
+        mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -1.0f, leftHandPosition.z);
+        mySphereRight.transform.position = new Vector3(rightHandPosition.x, -1.0f, rightHandPosition.z);
+        mySphereHead.transform.position = new Vector3(headPosition.x, -1.0f, headPosition.z);
 
-        }
+        //mySphereLeft.transform.Translate( new Vector3(leftHandVelocity.x, 0f, leftHandVelocity.z) );
+        //mySphereRight.GetComponent<Rigidbody>().AddForce(1f * rightHandVelocity);
+
 
     }
-        
+
+
 }
