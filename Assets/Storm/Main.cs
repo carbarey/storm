@@ -7,7 +7,7 @@ public class Main : MonoBehaviour {
 
     public GameObject cubePrefab;
     public GameObject obstaclePrefab;
-
+    
     public int numberOfCubes;
     public int numberOfObstacles;
     public float strength;
@@ -24,25 +24,24 @@ public class Main : MonoBehaviour {
     private Transform mySphereHead;
     private Transform riftHeadset;
 
+    private Transform myPlane;
+
     private bool existAvatar;
-    private float sphereLeftVelocity;
+
+    public float sizefactor;
 
     void Start()
     {
 
-
+        
         existAvatar = (GameObject.Find("LocalAvatar") != null);
 
         mySphereLeft = GameObject.Find("SphereLeft").transform;
         mySphereRight = GameObject.Find("SphereRight").transform;
         mySphereHead = GameObject.Find("SphereHead").transform;
+        if (existAvatar) riftHeadset = GameObject.Find("CenterEyeAnchor").transform;
 
-        if (existAvatar)
-        {
-            riftHeadset = GameObject.Find("CenterEyeAnchor").transform;
-            UpdateSpherePositions();
-        }
-
+        myPlane = GameObject.Find("Plane").transform;
 
         GameObject CubesContainer = new GameObject("CubesContainer");
 
@@ -53,44 +52,47 @@ public class Main : MonoBehaviour {
         for (int i = 0; i < numberOfCubes; i++)
         {
             myCubes[i] = (GameObject)Instantiate(cubePrefab, CubesContainer.transform);
-            myCubes[i].transform.position = new Vector3(Random.Range(0f, 1f), -1.0f, Random.Range(-1f, 0f));
+            myCubes[i].transform.position = new Vector3(Random.Range(0f, 1f), -0.8f, Random.Range(-1f, 0f));
         }
                 
         for (int i = 0; i < numberOfObstacles; i++)
         {
             myObstacles[i] = (GameObject)Instantiate(obstaclePrefab);
-            myObstacles[i].transform.position = new Vector3(Random.Range(-4.0f, 0f), -1.0f, Random.Range(-1f, 0f));
+            //myObstacles[i].transform.position = new Vector3(Random.Range(-10.0f, -5.0f), Random.Range(-1.0f, 3f), Random.Range(-5f, 5f));
+            //myObstacles[i].transform.position = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(6f, 3f), Random.Range(-5f, 5f));
+            myObstacles[i].transform.position = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, -0.6f), Random.Range(1.2f, 10f));
+
+            Physics.IgnoreCollision(myObstacles[i].GetComponent<Collider>(), myPlane.GetComponent<Collider>());
         }
 
 
+       
+        
     }
 
 
 
     void Update() 
     {
-        if (existAvatar) UpdateSpherePositions();
-    }
+        
 
+        if (existAvatar)
+        {
 
-    void UpdateSpherePositions()
-    {
-        Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
-        Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
-        Vector3 headPosition = riftHeadset.position;
+            
 
-        Vector3 leftHandVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch);
-        Vector3 rightHandVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
+            Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+            Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+            Vector3 headPosition = riftHeadset.position;
 
-        mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -1.0f, leftHandPosition.z);
-        mySphereRight.transform.position = new Vector3(rightHandPosition.x, -1.0f, rightHandPosition.z);
-        mySphereHead.transform.position = new Vector3(headPosition.x, -1.0f, headPosition.z);
+            sizefactor = Mathf.Abs(leftHandPosition.x - rightHandPosition.x); 
 
-        //mySphereLeft.transform.Translate( new Vector3(leftHandVelocity.x, 0f, leftHandVelocity.z) );
-        //mySphereRight.GetComponent<Rigidbody>().AddForce(1f * rightHandVelocity);
+            mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -0.8f, leftHandPosition.z + 0.2f);
+            mySphereRight.transform.position = new Vector3(rightHandPosition.x, -0.8f, rightHandPosition.z + 0.2f);
+            mySphereHead.transform.position = new Vector3(headPosition.x, -0.8f, headPosition.z + 0.2f);
 
+        }
 
     }
-
-
+        
 }
