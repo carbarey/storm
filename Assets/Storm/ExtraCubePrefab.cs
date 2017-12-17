@@ -12,11 +12,16 @@ public class ExtraCubePrefab : MonoBehaviour {
 
     private GameObject myNewCube;
     private Vector3 myNewCubePosition;
-    
+
+    private float xFrequency;
+    private float xAmplitude;
+    private float zVelocity;
+
 
     void Start () {
-       
-        
+        xFrequency = Random.Range(1f, 5f);
+        xAmplitude = Random.Range(5f, 20f);
+        zVelocity = Random.Range(2f, 4f);
     }
 
 
@@ -25,7 +30,7 @@ public class ExtraCubePrefab : MonoBehaviour {
 
         obstacleSpeed = GameObject.Find("Main").GetComponent<Main>().obstacleSpeed;
                 
-        this.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5f), Random.Range(-5.0f, 5f), -20f * (2.0f)) * obstacleSpeed;
+        this.GetComponent<Rigidbody>().velocity = new Vector3(xAmplitude * Mathf.Sin(xFrequency * Time.time), 0f, -20f * zVelocity) * obstacleSpeed;
 
         if (transform.position.z < -2.5f)
         {

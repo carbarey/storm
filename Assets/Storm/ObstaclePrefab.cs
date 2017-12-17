@@ -25,7 +25,7 @@ public class ObstaclePrefab : MonoBehaviour {
         pullRadius = GameObject.Find("Main").GetComponent<Main>().pullRadius;
         pullForce = GameObject.Find("Main").GetComponent<Main>().pullForce;
 
-        this.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5f), -20f, -20f * (4.0f - sizefactor * 2f)) * obstacleSpeed ;
+        this.GetComponent<Rigidbody>().velocity = new Vector3(0f, -20f, -20f * (4.0f - sizefactor * 2f)) * obstacleSpeed ;
 
         if (transform.position.y < -2.5f)
         {

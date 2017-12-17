@@ -37,10 +37,10 @@ public class Main : MonoBehaviour {
     public GameObject extraCubePrefab;
     public int numberOfExtraCubes;
 
+
     void Start()
     {
 
-        
         existAvatar = (GameObject.Find("LocalAvatar") != null);
 
         mySphereLeft = GameObject.Find("SphereLeft").transform;
@@ -51,10 +51,11 @@ public class Main : MonoBehaviour {
         myPlane = GameObject.Find("Plane").transform;
 
         GameObject CubesContainer = new GameObject("CubesContainer");
+        GameObject ExtraCubesContainer = new GameObject("ExtraCubesContainer");
+        GameObject ObstaclesContainer = new GameObject("ObstaclesContainer");
 
         myCubes = new GameObject[numberOfCubes];
         myObstacles = new GameObject[numberOfObstacles];
-
         myExtraCubes = new GameObject[numberOfExtraCubes];
 
 
@@ -66,21 +67,22 @@ public class Main : MonoBehaviour {
                 
         for (int i = 0; i < numberOfObstacles; i++)
         {
-            myObstacles[i] = (GameObject)Instantiate(obstaclePrefab);
+            myObstacles[i] = (GameObject)Instantiate(obstaclePrefab, ObstaclesContainer.transform);
             //myObstacles[i].transform.position = new Vector3(Random.Range(-10.0f, -5.0f), Random.Range(-1.0f, 3f), Random.Range(-5f, 5f));
             //myObstacles[i].transform.position = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(6f, 3f), Random.Range(-5f, 5f));
             myObstacles[i].transform.position = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, -0.6f), Random.Range(3.0f, 10f));
 
-            Physics.IgnoreCollision(myObstacles[i].GetComponent<Collider>(), myPlane.GetComponent<Collider>());
-                        
+            float randomScale = Random.Range(1f, 2.5f);
+            myObstacles[i].transform.localScale *= randomScale;
+
+            Physics.IgnoreCollision(myObstacles[i].GetComponent<Collider>(), myPlane.GetComponent<Collider>());    
         }
 
         for (int i = 0; i < numberOfExtraCubes; i++)
         {
-            myExtraCubes[i] = (GameObject)Instantiate(extraCubePrefab);            
+            myExtraCubes[i] = (GameObject)Instantiate(extraCubePrefab, ExtraCubesContainer.transform);            
             myExtraCubes[i].transform.position = new Vector3(Random.Range(-1f, 1f), -0.6f, Random.Range(10f, 20f));
         }
-
 
     }
 
@@ -89,11 +91,8 @@ public class Main : MonoBehaviour {
     void Update()
     {
 
-
         if (existAvatar)
         {
-
-
 
             Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
             Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
@@ -106,7 +105,6 @@ public class Main : MonoBehaviour {
             mySphereHead.transform.position = new Vector3(headPosition.x, -0.6f, headPosition.z + 0.2f);
 
         }
-
 
     }   
         
