@@ -30,6 +30,13 @@ public class Main : MonoBehaviour {
 
     public float sizefactor;
 
+    public float pullRadius;
+    public float pullForce;
+
+    private GameObject[] myExtraCubes;
+    public GameObject extraCubePrefab;
+    public int numberOfExtraCubes;
+
     void Start()
     {
 
@@ -48,11 +55,13 @@ public class Main : MonoBehaviour {
         myCubes = new GameObject[numberOfCubes];
         myObstacles = new GameObject[numberOfObstacles];
 
+        myExtraCubes = new GameObject[numberOfExtraCubes];
+
 
         for (int i = 0; i < numberOfCubes; i++)
         {
             myCubes[i] = (GameObject)Instantiate(cubePrefab, CubesContainer.transform);
-            myCubes[i].transform.position = new Vector3(Random.Range(0f, 1f), -0.8f, Random.Range(-1f, 0f));
+            myCubes[i].transform.position = new Vector3(Random.Range(0f, 1f), -0.6f, Random.Range(-1f, 0f));
         }
                 
         for (int i = 0; i < numberOfObstacles; i++)
@@ -60,39 +69,45 @@ public class Main : MonoBehaviour {
             myObstacles[i] = (GameObject)Instantiate(obstaclePrefab);
             //myObstacles[i].transform.position = new Vector3(Random.Range(-10.0f, -5.0f), Random.Range(-1.0f, 3f), Random.Range(-5f, 5f));
             //myObstacles[i].transform.position = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(6f, 3f), Random.Range(-5f, 5f));
-            myObstacles[i].transform.position = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, -0.6f), Random.Range(1.2f, 10f));
+            myObstacles[i].transform.position = new Vector3(Random.Range(-1f, 1f), Random.Range(2f, -0.6f), Random.Range(3.0f, 10f));
 
             Physics.IgnoreCollision(myObstacles[i].GetComponent<Collider>(), myPlane.GetComponent<Collider>());
+                        
+        }
+
+        for (int i = 0; i < numberOfExtraCubes; i++)
+        {
+            myExtraCubes[i] = (GameObject)Instantiate(extraCubePrefab);            
+            myExtraCubes[i].transform.position = new Vector3(Random.Range(-1f, 1f), -0.6f, Random.Range(10f, 20f));
         }
 
 
-       
-        
     }
 
 
 
-    void Update() 
+    void Update()
     {
-        
+
 
         if (existAvatar)
         {
 
-            
+
 
             Vector3 rightHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
             Vector3 leftHandPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
             Vector3 headPosition = riftHeadset.position;
 
-            sizefactor = Mathf.Abs(leftHandPosition.x - rightHandPosition.x); 
+            sizefactor = Mathf.Abs(leftHandPosition.x - rightHandPosition.x);
 
-            mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -0.8f, leftHandPosition.z + 0.2f);
-            mySphereRight.transform.position = new Vector3(rightHandPosition.x, -0.8f, rightHandPosition.z + 0.2f);
-            mySphereHead.transform.position = new Vector3(headPosition.x, -0.8f, headPosition.z + 0.2f);
+            mySphereLeft.transform.position = new Vector3(leftHandPosition.x, -0.6f, leftHandPosition.z + 0.2f);
+            mySphereRight.transform.position = new Vector3(rightHandPosition.x, -0.6f, rightHandPosition.z + 0.2f);
+            mySphereHead.transform.position = new Vector3(headPosition.x, -0.6f, headPosition.z + 0.2f);
 
         }
 
-    }
+
+    }   
         
 }

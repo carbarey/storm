@@ -925,7 +925,7 @@ MonoBehaviour:
   cubePrefab: {fileID: 1700370501340786, guid: 2f0a9c668e0276b4f80f36cb45991c66, type: 2}
   obstaclePrefab: {fileID: 1677383045519650, guid: 7ecdb34e13b6427428a76b22cebc01a9,
     type: 2}
-  numberOfCubes: 100
+  numberOfCubes: 10
   numberOfObstacles: 400
   strength: 25
   minStrength2: 0.3
@@ -933,6 +933,11 @@ MonoBehaviour:
   distTriangleScale: 100
   obstacleSpeed: 0.04
   sizefactor: 0
+  pullRadius: 1
+  pullForce: 3
+  extraCubePrefab: {fileID: 1700370501340786, guid: a241c33666958ec4abfa847fa4cb69f6,
+    type: 2}
+  numberOfExtraCubes: 100
 --- !u!4 &1698607696
 Transform:
   m_ObjectHideFlags: 0
